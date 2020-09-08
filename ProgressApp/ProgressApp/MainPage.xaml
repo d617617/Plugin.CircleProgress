@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:views="clr-namespace:ProgressApp.Views"
+             x:Class="ProgressApp.MainPage">
+
+    <StackLayout>
+        <Label Text="测试" x:Name="lbl"></Label>
+        <BoxView x:Name="box" VerticalOptions="Start" HeightRequest="100" WidthRequest="100" HorizontalOptions="Start" BackgroundColor="Red">
+            <BoxView.GestureRecognizers>
+                <PanGestureRecognizer PanUpdated="PanGestureRecognizer_PanUpdated"></PanGestureRecognizer>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+
+        <views:CircleProgressView Progress=".5"  Text="5分钟" FontSize=".2"
+                                  ProgressBarWidth=".15"  ProgressTrackBarColor="Gray" ProgressBarColor="DarkSlateBlue"
+                                  x:Name="progress" BackgroundColor="CornflowerBlue" Radius="100" HorizontalOptions="Start" VerticalOptions="Start">
+            
+        </views:CircleProgressView>
+    </StackLayout>
+
+</ContentPage>
