@@ -47,7 +47,7 @@ namespace ProgressApp
         {
             Random r = new Random();
             //lbl.Text = r.Next(1, 1000).ToString();
-            this.progress.Progress = (float)r.NextDouble();
+            this.progress.SmoothToProgress(1);
         }
     }
 }

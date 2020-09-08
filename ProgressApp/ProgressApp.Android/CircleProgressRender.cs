@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-
+using Android.Animation;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -24,22 +24,40 @@ namespace ProgressApp.Droid
         CircleProgressView circleProgress;
         double _des = Xamarin.Essentials.DeviceDisplay.MainDisplayInfo.Density;
         Paint _mPaint;
+        float _tempMaxProgress;
 
         const float StartAngle = -90;
         int _circleRadius = 0;
         int _progressBarWidth = 0;
         SweepGradient mSweepGradient;
+        ValueAnimator _progressAnimator;
         public CircleProgressRender(Context context) : base(context)
         {
+            _progressAnimator = new ValueAnimator();
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.View> e)
         {
             base.OnElementChanged(e);
-            if (circleProgress == null)
+            if (e.OldElement != null)
             {
-                circleProgress = Element as CircleProgressView;
+                _progressAnimator.Update -= UpdateProgress_AnimatorUpdate;
+                circleProgress.SmoothToProgressAction = null;
             }
+            if (e.NewElement != null)
+            {
+                if (circleProgress == null)
+                {
+                    circleProgress = Element as CircleProgressView;
+                }
+                _progressAnimator.Update += UpdateProgress_AnimatorUpdate;
+                circleProgress.SmoothToProgressAction = (progress, duration) =>
+                {
+                    SmoothToProgress(circleProgress.Progress, progress, duration);
+                };
+            }
+
+
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -61,13 +79,18 @@ namespace ProgressApp.Droid
         protected override void OnAttachedToWindow()
         {
             base.OnAttachedToWindow();
-            SetProgressData();
+            SetProgressBarWidthData();
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            base.OnDetachedFromWindow();
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
-            SetProgressData();
+            SetProgressBarWidthData();
         }
 
 
@@ -105,7 +128,7 @@ namespace ProgressApp.Droid
         }
 
 
-        void SetProgressData()
+        void SetProgressBarWidthData()
         {
             _circleRadius = (int)Math.Ceiling(_des * circleProgress.Radius);
             if (circleProgress.ProgressBarWidth < 1)
@@ -116,9 +139,22 @@ namespace ProgressApp.Droid
             {
                 _progressBarWidth = (int)Math.Ceiling(_des * circleProgress.ProgressBarWidth);
             }
-
         }
 
+
+        void SmoothToProgress(float start, float end, int duration)
+        {
+            _tempMaxProgress = end;
+            _progressAnimator.SetFloatValues(new float[] { start, end });
+            _progressAnimator.SetDuration(duration);
+            _progressAnimator.Start();
+        }
+
+        void UpdateProgress_AnimatorUpdate(object sender, ValueAnimator.AnimatorUpdateEventArgs e)
+        {
+            var percent = (float)e.Animation.AnimatedValue;
+            circleProgress.Progress = _tempMaxProgress * percent;
+        }
 
         protected virtual void DrawBackgroundCircle(Canvas canvas)
         {
@@ -146,7 +182,6 @@ namespace ProgressApp.Droid
 
         protected virtual void DrawProgressBar(Canvas canvas)
         {
-
             //绘制完全
             RectF oval = new RectF();
             oval.Left = 0;
@@ -167,6 +202,9 @@ namespace ProgressApp.Droid
                         count++;
                     }
                     mSweepGradient = new SweepGradient(centerX, centerY, colors: colors, positions: null);
+                    Matrix matrix = new Matrix();
+                    matrix.SetRotate(-90,centerX,centerY);
+                    mSweepGradient.SetLocalMatrix(matrix);
                 }
                 _mPaint.SetShader(mSweepGradient);
             }

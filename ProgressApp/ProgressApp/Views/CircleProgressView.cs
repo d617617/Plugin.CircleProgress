@@ -96,7 +96,13 @@ BindableProperty.Create(nameof(Progress), typeof(float), typeof(CircleProgressVi
         public CircleProgressView()
         {
             GradientColors = new List<Color>();
-            
+
+        }
+
+        public Action<float, int> SmoothToProgressAction;
+        public void SmoothToProgress(float targetProgress, int duration = 300)
+        {
+            SmoothToProgressAction?.Invoke(targetProgress, duration);
         }
 
         protected override SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
