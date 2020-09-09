@@ -14,9 +14,15 @@
 
         <views:CircleProgressView Progress=".5"  Text="5分钟" FontSize=".2"
                                   ProgressBarWidth=".15"  ProgressTrackBarColor="Gray" ProgressBarColor="DarkSlateBlue"
-                                  x:Name="progress" BackgroundColor="CornflowerBlue" Radius="100" HorizontalOptions="Start" VerticalOptions="Start">
+                                  x:Name="progress" Radius="50" HorizontalOptions="Start" VerticalOptions="Start">
             
         </views:CircleProgressView>
+
+        <views:CustomCircleProgress BackgroundColor="CadetBlue" Radius="100"
+                                    RightHalfAngle="90"
+                                    HorizontalOptions="Start" VerticalOptions="Start">
+            
+        </views:CustomCircleProgress>
     </StackLayout>
 
 </ContentPage>

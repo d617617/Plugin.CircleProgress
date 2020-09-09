@@ -34,6 +34,7 @@ namespace ProgressApp.Droid
         public CircleProgressRender(Context context) : base(context)
         {
             _progressAnimator = new ValueAnimator();
+            SetWillNotDraw(false);
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.View> e)
@@ -101,16 +102,17 @@ namespace ProgressApp.Droid
             if (_mPaint == null)
             {
                 _mPaint = new Paint();
+                _mPaint.Flags = PaintFlags.AntiAlias;
             }
             DrawProgressBarTrack(canvas);
             DrawProgressBar(canvas);
             DrawBackgroundCircle(canvas);
             DrawText(canvas);
-            //drawDial(canvas);
+            //DrawDial(canvas);
         }
 
 
-        private void drawDial(Canvas canvas)
+        private void DrawDial(Canvas canvas)
         {
             int total = 1;
             canvas.Save();
