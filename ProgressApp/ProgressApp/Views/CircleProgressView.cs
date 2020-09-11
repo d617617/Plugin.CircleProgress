@@ -14,12 +14,18 @@ namespace ProgressApp.Views
         public static readonly BindableProperty RadiusProperty =
    BindableProperty.Create(nameof(Radius), typeof(double), typeof(CircleProgressView), 15d, propertyChanged: (obj, o, n) =>
      {
-         (obj as CircleProgressView).InvalidateMeasure();
+         (obj as CircleProgressView).RadiusPropertyChanged();
      });
         public double Radius
         {
             get => (double)GetValue(RadiusProperty);
             set => SetValue(RadiusProperty, value);
+        }
+
+        void RadiusPropertyChanged() 
+        {
+            //MeasureSizeByFontsize = false;
+            //InvalidateMeasure(); 
         }
         #endregion
 
@@ -87,6 +93,35 @@ BindableProperty.Create(nameof(Progress), typeof(float), typeof(CircleProgressVi
         }
         #endregion
 
+        /// <summary>
+        /// 文字的Margin，尽在MeasureSizeByFontsize=true时出现
+        /// </summary>
+        public Thickness TextMargin { get; set; }
+
+        public float CharacterSpace { get; set; }
+
+        public bool MeasureSizeByFontsize { get; set; }
+
+        public string MinWidthText { get; set; }
+
+        #region RightHalfAngle
+        /// <summary>
+        /// 右半边角度，即为半角模式
+        /// </summary>
+        public static readonly BindableProperty RightHalfAngleProperty =
+   BindableProperty.Create(nameof(RightHalfAngle), typeof(float), typeof(CircleProgressView), default(float), propertyChanged: (obj, o, n) =>
+   {
+       (obj as CircleProgressView).InvalidateMeasure();
+   });
+        public float RightHalfAngle
+        {
+            get => (float)GetValue(RightHalfAngleProperty);
+            set => SetValue(RightHalfAngleProperty, value);
+        }
+        #endregion
+
+
+
         public double FontSize { get; set; } = 14;
 
         public Color TextColor { get; set; } = Color.Black;
@@ -107,7 +142,24 @@ BindableProperty.Create(nameof(Progress), typeof(float), typeof(CircleProgressVi
 
         protected override SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
         {
-            return new SizeRequest(new Size(Radius * 2, Radius * 2));
+            return base.OnMeasure(widthConstraint, heightConstraint);
+            //if (RightHalfAngle == 0)
+            //{
+            //    return new SizeRequest(new Size(Radius * 2, Radius * 2));
+            //}
+            //else if (RightHalfAngle <= 90)
+            //{
+            //    double d = ((90 - RightHalfAngle) * Math.PI) / 180;
+            //    var halfWidth = Radius * Math.Cos(d);
+            //    return new SizeRequest(new Size(halfWidth * 2, Radius));
+
+            //}
+            //else
+            //{
+            //    double d = ((180 - RightHalfAngle) * Math.PI) / 180;
+            //    var extHeight = Radius * Math.Cos(d);
+            //    return new SizeRequest(new Size(Radius * 2, Radius + extHeight));
+            //}
         }
     }
 }

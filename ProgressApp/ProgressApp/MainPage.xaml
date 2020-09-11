@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:views="clr-namespace:ProgressApp.Views"
              x:Class="ProgressApp.MainPage">
 
-    <StackLayout>
+    <StackLayout Spacing="0">
         <Label Text="测试" x:Name="lbl"></Label>
         <BoxView x:Name="box" VerticalOptions="Start" HeightRequest="100" WidthRequest="100" HorizontalOptions="Start" BackgroundColor="Red">
             <BoxView.GestureRecognizers>
@@ -12,17 +12,22 @@
             </BoxView.GestureRecognizers>
         </BoxView>
 
-        <views:CircleProgressView Progress=".5"  Text="5分钟" FontSize=".2"
-                                  ProgressBarWidth=".15"  ProgressTrackBarColor="Gray" ProgressBarColor="DarkSlateBlue"
-                                  x:Name="progress" Radius="50" HorizontalOptions="Start" VerticalOptions="Start">
+        <views:CircleProgressView Progress="1"  Text="5分钟\n进度" FontSize="55" MinWidthText="5分钟"
+                                  BackgroundColor="CadetBlue" MeasureSizeByFontsize="True"
+                                  ProgressBarWidth="10"  ProgressTrackBarColor="Gray" 
+                                  TextMargin="0" RightHalfAngle="90"
+                                  ProgressBarColor="DarkSlateBlue"
+                                  x:Name="progress"  HorizontalOptions="Start" VerticalOptions="Start">
             
         </views:CircleProgressView>
 
-        <views:CustomCircleProgress BackgroundColor="CadetBlue" Radius="100"
-                                    RightHalfAngle="90"
+        <!--<views:CustomCircleProgress BackgroundColor="CadetBlue" Radius="200"
+                                    ProgressTrackBarColor="Gray" 
+                                    ProgressBarWidth=".15" 
+                                    RightHalfAngle="60" Progress=".6"
                                     HorizontalOptions="Start" VerticalOptions="Start">
             
-        </views:CustomCircleProgress>
+        </views:CustomCircleProgress>-->
     </StackLayout>
 
 </ContentPage>

@@ -15,8 +15,8 @@ namespace ProgressApp
             InitializeComponent();
             this.progress.GradientColors.Add(Color.Blue) ;
             this.progress.GradientColors.Add(Color.DarkBlue);
+            this.progress.GradientColors.Add(Color.Orange);
             this.progress.GradientColors.Add(Color.Red);
-           
         }
 
         double x;
@@ -47,7 +47,8 @@ namespace ProgressApp
         {
             Random r = new Random();
             //lbl.Text = r.Next(1, 1000).ToString();
-            this.progress.SmoothToProgress((float)r.NextDouble());
+            //this.progress.SmoothToProgress((float)r.NextDouble());
+            this.progress.Radius = 150;
         }
     }
 }
